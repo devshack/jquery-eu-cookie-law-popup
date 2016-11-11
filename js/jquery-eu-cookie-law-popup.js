@@ -1,17 +1,23 @@
 /**
  * 	
- * JQUERY EU COOKIE LAW POPUPS
+ * JQUERY EU COOKIE LAW POPUPS / Advanced
  * version 1.0.1
  * 
- * Code on Github:
+ * Original code on Github:
  * https://github.com/wimagguc/jquery-eu-cookie-law-popup
  * 
+ * Advanced code on Github:
+ * https://github.com/devshack/jquery-eu-cookie-law-popup
+ *
  * To see a live demo, go to:
  * http://www.wimagguc.com/2015/03/jquery-eu-cookie-law-popup/
  * 
  * by Richard Dancsi
  * http://www.wimagguc.com/
  * 
+ * Extended by Boris Bojic 
+ * http://www.devshack.biz/
+ *
  */
 
 (function($) {
@@ -37,6 +43,8 @@ $.fn.euCookieLawPopup = (function() {
 		buttonContinueTitle : 'Continue',
 		buttonLearnmoreTitle : 'Learn&nbsp;more',
 		buttonLearnmoreOpenInNewWindow : true,
+		showTitle : true,
+		showText : true,
 		showCloseButton : true,
 		agreementExpiresInDays : 30,
 		autoAcceptCookiePolicy : false,
@@ -117,6 +125,12 @@ $.fn.euCookieLawPopup = (function() {
 			if (typeof settings.buttonLearnmoreOpenInNewWindow !== 'undefined') {
 				_self.params.buttonLearnmoreOpenInNewWindow = settings.buttonLearnmoreOpenInNewWindow;
 			}
+			if (typeof settings.showTitle !== 'undefined') {
+				_self.params.showTitle = settings.showTitle;
+			}
+			if (typeof settings.showText !== 'undefined') {
+				_self.params.showText = settings.showText;
+			}
 			if (typeof settings.showCloseButton !== 'undefined') {
 				_self.params.showCloseButton = settings.showCloseButton;
 			}
@@ -141,15 +155,15 @@ $.fn.euCookieLawPopup = (function() {
 
 		var html = 
 			'<div class="eupopup-container' + 
-			    ' eupopup-container-' + _self.params.popupPosition + 
-			    (_self.params.compactStyle ? ' eupopup-style-compact' : '') + 
+				' eupopup-container-' + _self.params.popupPosition + 
+				(_self.params.compactStyle ? ' eupopup-style-compact' : '') + 
 				' eupopup-color-' + _self.params.colorStyle + '">' +
-				'<div class="eupopup-head">' + _self.params.popupTitle + '</div>' +
-				'<div class="eupopup-body">' + _self.params.popupText + '</div>' +
+				(_self.params.showTitle ? '<div class="eupopup-head">' + _self.params.popupTitle + '</div>' : '') +
+				(_self.params.showText ? '<div class="eupopup-body">' + _self.params.popupText + '</div>' : '') +
 				'<div class="eupopup-buttons">' +
 				  '<a href="#" class="eupopup-button eupopup-button_1">' + _self.params.buttonContinueTitle + '</a>' +
 				  '<a href="' + _self.params.cookiePolicyUrl + '"' +
-				 	(_self.params.buttonLearnmoreOpenInNewWindow ? ' target=_blank ' : '') +
+					(_self.params.buttonLearnmoreOpenInNewWindow ? ' target=_blank ' : '') +
 					' class="eupopup-button eupopup-button_2">' + _self.params.buttonLearnmoreTitle + '</a>' +
 				  '<div class="clearfix"></div>' +
 				'</div>' +
@@ -176,7 +190,7 @@ $.fn.euCookieLawPopup = (function() {
 		var cookies = document.cookie.split(";");
 		for (var i = 0; i < cookies.length; i++) {
 			var c = cookies[i].trim();
-			if (c.indexOf(_self.vars.COOKIE_NAME) == 0) {
+			if (c.indexOf(_self.vars.COOKIE_NAME) === 0) {
 				userAcceptedCookies = c.substring(_self.vars.COOKIE_NAME.length + 1, c.length);
 			}
 		}
@@ -185,7 +199,6 @@ $.fn.euCookieLawPopup = (function() {
 	};
 	
 	var hideContainer = function() {
-		// $('.eupopup-container').slideUp(200);
 		$('.eupopup-container').animate({
 			opacity: 0,
 			height: 0
